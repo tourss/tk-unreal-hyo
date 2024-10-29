@@ -68,7 +68,7 @@ def automated_import_and_add_to_level(fbx_file_paths, destination_path):
                 print(f"Asset {asset.get_name()} was added to the level at default position (0, 0, 0).")
 
 # 예시 사용: FBX 파일 경로와 저장할 위치 지정
-fbx_files = [r"C:\Users\admin\Desktop\fbx\bread_maya\bread_maya.fbx"]
+fbx_files = r"C:\Users\admin\Desktop\fbx\bread_maya\bread_maya.fbx"
 dest_path = "/Game/fbx_python/bread_maya"
 
 # 임포트 후 레벨에 추가
