@@ -12,20 +12,18 @@ def importAssets(file_names):
     task.automated = True
     task.destination_path = "/Game/import_test"
     task.replace_existing = True
-    task.filename = file_names[0]  # Single file; for multiple files, iterate over file_names
+    task.filename = file_names[0]  # 단일 파일
     task.save = True
+    print (file_names)
 
     # Execute Import Task
     assetTools.import_asset_tasks([task])
 
+    # Check if the import was successful
     if task.imported_object_paths:
         unreal.log("Assets imported successfully: " + str(task.imported_object_paths))
     else:
-        unreal.log_error("Failed to import assets.")
-
-    # Build imported assets
-    buildSelectedAssets("/Game/import_test", file_names)
-
+        unreal.log_error("Failed to import assets. Check file compatibility and paths.")
 
 def buildSelectedAssets(folder_path, file_names):
     textures = []
@@ -46,5 +44,5 @@ def buildSelectedAssets(folder_path, file_names):
             pass  # Some assets may not have asset import data
 
 if __name__ == "__main__":
-    file_names = [r"C:\Users\admin\Desktop\fbx\walking_human_maya\walking_human_maya.fbx"]
+    file_names = [r"C:/Users/admin/Desktop/fbx/mint_girl/mint_girl.fbx"]
     importAssets(file_names)

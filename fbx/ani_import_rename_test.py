@@ -56,7 +56,7 @@ def import_fbx_animation_with_custom_suffix(fbx_path, suffix_list, custom_prefix
 
 # 사용 예시
 import_fbx_animation_with_custom_suffix(
-    "/Game/FBX/MyAnimationAsset.fbx",
+    fbx_path=r"C:\Users\admin\Desktop\fbx\spider\spider.fbx",
     suffix_list=["_A", "_ABP", "_RIG"],
     custom_prefix="Custom_",
     custom_suffix="_01"

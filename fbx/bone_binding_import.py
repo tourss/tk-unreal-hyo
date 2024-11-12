@@ -55,4 +55,4 @@ def rename_assets_from_fbx(fbx_path, base_name):
             asset_count += 1  # 순차 번호 증가
 
 # 예시 사용법
-rename_assets_from_fbx("/Game/FBX/MyAsset.fbx", "MyCustomAsset")
+rename_assets_from_fbx(r"C:\Users\admin\Desktop\fbx\spider\spider.fbx", "MyCustomAsset")
