@@ -141,129 +141,129 @@ class AppLaunch(tank.Hook):
             return {"command": cmd, "return_code": exit_code}
 
 
-def get_rez_packages(sg, app_name, version, system, project):
+# def get_rez_packages(sg, app_name, version, system, project):
     
-    if system == 'Linux':
-        filter_dict = [['code','is',app_name.title()+" "+version],
-                       ['projects','in',project]
-                      ]
-        packages = sg.find("Software",filter_dict,['sg_rez'])
-        if packages : 
-            packages =  packages[0]['sg_rez']
-        else:
-            filter_dict = [['code','is',app_name.title()+" "+version],
-                        ['projects','is',None] ]
-            packages = sg.find("Software",filter_dict,['sg_rez'])
-            if packages:
-                packages =  packages[0]['sg_rez']
+#     if system == 'Linux':
+#         filter_dict = [['code','is',app_name.title()+" "+version],
+#                        ['projects','in',project]
+#                       ]
+#         packages = sg.find("Software",filter_dict,['sg_rez'])
+#         if packages : 
+#             packages =  packages[0]['sg_rez']
+#         else:
+#             filter_dict = [['code','is',app_name.title()+" "+version],
+#                         ['projects','is',None] ]
+#             packages = sg.find("Software",filter_dict,['sg_rez'])
+#             if packages:
+#                 packages =  packages[0]['sg_rez']
 
-    else:
-        filter_dict = [['code','is',app_name.title()+" "+version],
-                       ['projects','in',project]
-                      ]
-        packages = sg.find("Software",filter_dict,['sg_win_rez'])
-        if packages : 
-            packages =  packages[0]['sg_win_rez']
-        else:
-            filter_dict = [['code','is',app_name.title()+" "+version],
-                        ['projects','is',None] ]
-            packages = sg.find("Software",filter_dict,['sg_win_rez'])
-            if packages:
-                packages =  packages[0]['sg_win_rez']
+#     else:
+#         filter_dict = [['code','is',app_name.title()+" "+version],
+#                        ['projects','in',project]
+#                       ]
+#         packages = sg.find("Software",filter_dict,['sg_win_rez'])
+#         if packages : 
+#             packages =  packages[0]['sg_win_rez']
+#         else:
+#             filter_dict = [['code','is',app_name.title()+" "+version],
+#                         ['projects','is',None] ]
+#             packages = sg.find("Software",filter_dict,['sg_win_rez'])
+#             if packages:
+#                 packages =  packages[0]['sg_win_rez']
 
-    if packages:
-        packages = [ x for x in packages.split(",")] 
-    else:
-        packages = None
+#     if packages:
+#         packages = [ x for x in packages.split(",")] 
+#     else:
+#         packages = None
         
-    return packages
+#     return packages
 
 
 
-def get_adapter(system=''):
-    if not system:
-        system = platform.system()
+# def get_adapter(system=''):
+#     if not system:
+#         system = platform.system()
     
-    options = {
-        'Linux' : LinuxAdapter,
-        'Windows' : WindowsAdapter
-        }
+#     options = {
+#         'Linux' : LinuxAdapter,
+#         'Windows' : WindowsAdapter
+#         }
 
-    try :
-        return options[system]
+#     try :
+#         return options[system]
 
-    except KeyError:
-        raise NotImplementedError('system "{system}" is currently unsupported. Options were, "{options}"'
-                                  ''.format(system=system, options=list(options)))
+#     except KeyError:
+#         raise NotImplementedError('system "{system}" is currently unsupported. Options were, "{options}"'
+#                                   ''.format(system=system, options=list(options)))
     
 
-class BaseAdapter:
+# class BaseAdapter:
 
-    shell_type = 'bash'
+#     shell_type = 'bash'
 
-    @staticmethod
-    def get_command(path, args):
-        return 'mate-terminal -x bash -c "{path}" {args} &'.format(path=path, args=args)
+#     @staticmethod
+#     def get_command(path, args):
+#         return 'mate-terminal -x bash -c "{path}" {args} &'.format(path=path, args=args)
 
-    @staticmethod
-    def get_rez_root_command():
+#     @staticmethod
+#     def get_rez_root_command():
 
-        return 'rez-env rez -- printenv REZ_REZ_ROOT'
+#         return 'rez-env rez -- printenv REZ_REZ_ROOT'
 
-    @classmethod
-    def get_rez_module_root(cls):
+#     @classmethod
+#     def get_rez_module_root(cls):
 
-        command = cls.get_rez_root_command()
-        module_path, stderr = subprocess.Popen(
-            command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).communicate()
+#         command = cls.get_rez_root_command()
+#         module_path, stderr = subprocess.Popen(
+#             command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).communicate()
 
-        module_path = module_path.strip()
+#         module_path = module_path.strip()
 
-        if not stderr and module_path:
-            return module_path
+#         if not stderr and module_path:
+#             return module_path
 
-        return ''
+#         return ''
 
-    @classmethod
-    def execute(cls, context, args, command):
+#     @classmethod
+#     def execute(cls, context, args, command):
 
-        os.environ['USE_SHOTGUN'] = "OK"
+#         os.environ['USE_SHOTGUN'] = "OK"
 
-        if args:
-            command += ' {args}'.format(args=args)
+#         if args:
+#             command += ' {args}'.format(args=args)
         
-        if platform.system() == 'Linux':
-            command = "mate-terminal -x bash -c '{}' &".format(command)
-        else:
-            command = "start /B 'App' '{}'".format(command)
+#         if platform.system() == 'Linux':
+#             command = "mate-terminal -x bash -c '{}' &".format(command)
+#         else:
+#             command = "start /B 'App' '{}'".format(command)
 
-        context.execute_shell(
-            command = command,
-            stdin = False,
-            block = False
-        )
+#         context.execute_shell(
+#             command = command,
+#             stdin = False,
+#             block = False
+#         )
 
-        return_code = 0
-        context.print_info(verbosity=True)
+#         return_code = 0
+#         context.print_info(verbosity=True)
 
-        return {
-            'command': command,
-            'return_code': return_code,
-        }
-
-
-class LinuxAdapter(BaseAdapter):
-
-    pass
+#         return {
+#             'command': command,
+#             'return_code': return_code,
+#         }
 
 
-class WindowsAdapter(BaseAdapter):
+# class LinuxAdapter(BaseAdapter):
 
-    shell_type = 'cmd'
+#     pass
 
-    @staticmethod
-    def get_command(path, args):
-        return 'start /B "App" "{path}" {args}'.format(path=path, args=args)
+
+# class WindowsAdapter(BaseAdapter):
+
+#     shell_type = 'cmd'
+
+#     @staticmethod
+#     def get_command(path, args):
+#         return 'start /B "App" "{path}" {args}'.format(path=path, args=args)
 
     #@staticmethod
     #def get_rez_root_command():
