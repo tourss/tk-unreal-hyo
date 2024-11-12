@@ -265,7 +265,7 @@ class WindowsAdapter(BaseAdapter):
     def get_command(path, args):
         return 'start /B "App" "{path}" {args}'.format(path=path, args=args)
 
-    @staticmethod
-    def get_rez_root_command():
+    #@staticmethod
+    #def get_rez_root_command():
 
-        return 'rez-env rez -- echo %REZ_REZ_ROOT%'
+        #return 'rez-env rez -- echo %REZ_REZ_ROOT%'
