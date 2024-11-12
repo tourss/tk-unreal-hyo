@@ -19,7 +19,7 @@ logging.basicConfig(
 
 # Create TimedRotatingFileHandler to rotate log files every 15 days
 handler = handlers.TimedRotatingFileHandler(
-    log_filename, when="D", interval=15, backupCount=10
+    log_filename, when="D", interval=15, backupCount=150
 )
 logging.getLogger().addHandler(handler)
 
